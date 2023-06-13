@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 interface TableDataProps {
@@ -10,30 +9,10 @@ interface TableDataProps {
 }
 interface TableProps {
   tables: TableDataProps[];
+  empty: boolean;
 }
 
-export default function TableData({ tables }: TableProps) {
-  const [tableEmpty, setTableEmpty] = useState(false);
-  const [table, setTable] = useState([
-    {
-      id: 0,
-      nama: "",
-      alamat: "",
-      noTelp: "",
-      email: "",
-    },
-  ]);
-
-  useEffect(() => {
-    if (localStorage.getItem("data") === null) {
-      setTableEmpty(true);
-      setTable([]);
-    } else {
-      const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
-      setTable(dataLocal);
-    }
-  }, []);
-
+export default function TableData({ tables, empty }: TableProps) {
   const handleDelete = (id: number) => {
     let dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
     dataLocal = dataLocal.filter((item: any) => item.id !== id);
@@ -41,38 +20,61 @@ export default function TableData({ tables }: TableProps) {
     window.location.href = "/";
   };
   return (
-    <table className="table-auto border-collapse border border-slate-400 mt-10">
-      <thead>
+    <table className=" text-center text-sm font-light mt-10">
+      <thead className="border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800">
         <tr>
-          <th className="border border-slate-300 p-3 text-center">No</th>
-          <th className="border border-slate-300 p-3">Nama</th>
-          <th className="border border-slate-300 p-3">Alamat</th>
-          <th className="border border-slate-300 p-3">No Telp</th>
-          <th className="border border-slate-300 p-3">Email</th>
-          <th className="border border-slate-300 p-3">Action</th>
+          <th scope="col" className=" px-6 py-4">
+            No
+          </th>
+          <th scope="col" className=" px-6 py-4">
+            Nama
+          </th>
+          <th scope="col" className=" px-6 py-4">
+            Alamat
+          </th>
+          <th scope="col" className=" px-6 py-4">
+            No Telp
+          </th>
+          <th scope="col" className=" px-6 py-4">
+            Email
+          </th>
+          <th scope="col" className=" px-6 py-4">
+            Action
+          </th>
         </tr>
       </thead>
       <tbody>
-        {tableEmpty && (
+        {empty && (
           <tr>
-            <td colSpan={6} className="border border-slate-300 p-3 text-center">
+            <td
+              colSpan={6}
+              className="border border-slate-300 p-3 text-center font-bold text-lg"
+            >
               Data Kosong, Silahkan Masukkan Data
             </td>
           </tr>
         )}
-        {!tableEmpty &&
-          table.length > 0 &&
-          table.map((item, index) => {
+        {!empty &&
+          tables.length > 0 &&
+          tables.map((item, index) => {
             return (
-              <tr key={index}>
-                <td className="border border-slate-300 p-3 text-center">
+              <tr key={index} className="border-b dark:border-neutral-500">
+                <td className="whitespace-nowrap  px-6 py-4 text-center font-semibold text-lg">
                   {index + 1}
                 </td>
-                <td className="border border-slate-300 p-3">{item.nama}</td>
-                <td className="border border-slate-300 p-3">{item.alamat}</td>
-                <td className="border border-slate-300 p-3">{item.noTelp}</td>
-                <td className="border border-slate-300 p-3">{item.email}</td>
-                <td className="w-[200px] border border-slate-300 p-3 flex justify-around">
+                <td className="whitespace-nowrap  px-6 py-4 font-semibold text-lg">
+                  {item.nama}
+                </td>
+                <td className="whitespace-nowrap  px-6 py-4 font-semibold text-lg">
+                  {item.alamat}
+                </td>
+                <td className="whitespace-nowrap  px-6 py-4 font-semibold text-lg">
+                  {item.noTelp}
+                </td>
+                <td className="whitespace-nowrap  px-6 py-4 font-semibold text-lg">
+                  {item.email}
+                </td>
+                <td className="w-[200px] whitespace-nowrap  px-6 py-4 flex justify-around">
                   <Link
                     to={`/edit/${item.id}`}
                     className="flex w-300 h-10 justify-center rounded-md bg-yellow-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm"
