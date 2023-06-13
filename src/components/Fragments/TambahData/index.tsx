@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Button from "../../molecules/Button";
-import FormInput from "../../molecules/FormInput";
+import Button from "../../Elements/Button";
+import FormInput from "../../Elements/FormInput";
 
 export default function TambahData() {
   const [nama, setNama] = useState("");
@@ -8,17 +8,24 @@ export default function TambahData() {
   const [noTelp, setNoTelp] = useState("");
   const [email, setEmail] = useState("");
 
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const data = {
-  //     nama,
-  //     alamat,
-  //     noTelp,
-  //     email,
-  //   };
-  //   onSubmit(data);
-  // };
-
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = {
+      id: Math.floor(Math.random() * 100 + 1),
+      nama,
+      alamat,
+      noTelp,
+      email,
+    };
+    if (localStorage.getItem("data") === null) {
+      localStorage.setItem("data", JSON.stringify([data]));
+    } else {
+      const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
+      dataLocal.push(data);
+      localStorage.setItem("data", JSON.stringify(dataLocal));
+    }
+    window.location.href = "/";
+  };
   return (
     <>
       <div className="h-screen flex flex-col items-center justify-center">
@@ -26,7 +33,7 @@ export default function TambahData() {
           <p className="text-2xl font-bold text-teal-600 mb-10">
             Form Input Data
           </p>
-          <form>
+          <form onSubmit={handleSubmit}>
             <FormInput
               label="Nama"
               name="nama"

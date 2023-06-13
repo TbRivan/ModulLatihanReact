@@ -1,18 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import TambahData from "./pages/TambahData.tsx";
+import UpdateDataPage from "./pages/updateData.tsx";
+import TambahDataPage from "./pages/tambahData.tsx";
+import DashboardPage from "./pages/Dashboard.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <DashboardPage />,
   },
   {
     path: "/add",
-    element: <TambahData />,
+    element: <TambahDataPage />,
+  },
+  {
+    path: "/edit/:id",
+    element: <UpdateDataPage />,
   },
 ]);
 
