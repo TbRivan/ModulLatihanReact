@@ -53,7 +53,6 @@ export default function DashboardPage() {
               name="nama"
               type="text"
               placeholder="Masukkan Nama"
-              value={search}
               onChange={handleSearch}
             />
           </div>

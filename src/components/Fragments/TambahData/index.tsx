@@ -1,22 +1,18 @@
-import { useState } from "react";
 import Button from "../../Elements/Button";
 import FormInput from "../../Elements/FormInput";
 
 export default function TambahData() {
-  const [nama, setNama] = useState("");
-  const [alamat, setAlamat] = useState("");
-  const [noTelp, setNoTelp] = useState("");
-  const [email, setEmail] = useState("");
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     const data = {
       id: Math.floor(Math.random() * 100 + 1),
-      nama,
-      alamat,
-      noTelp,
-      email,
+      nama: event.target.nama.value,
+      alamat: event.target.alamat.value,
+      noTelp: event.target.noTelp.value,
+      email: event.target.email.value,
     };
+
+    console.log(event.target);
     if (localStorage.getItem("data") === null) {
       localStorage.setItem("data", JSON.stringify([data]));
     } else {
@@ -39,32 +35,24 @@ export default function TambahData() {
               name="nama"
               type="text"
               placeholder="Masukkan Nama"
-              value={nama}
-              onChange={(e) => setNama(e.target.value)}
             />
             <FormInput
               label="Alamat"
               name="alamat"
               type="text"
               placeholder="Masukkan Alamat"
-              value={alamat}
-              onChange={(e) => setAlamat(e.target.value)}
             />
             <FormInput
               label="No Telp"
               name="noTelp"
               type="number"
               placeholder="Masukkan No Telp"
-              value={noTelp}
-              onChange={(e) => setNoTelp(e.target.value)}
             />
             <FormInput
               label="Email"
               name="email"
               type="email"
               placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
             />
             <div className="w-100 mt-10">
               <Button text="Save" type="submit" />

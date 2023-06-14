@@ -2,12 +2,12 @@ interface InputPropTypes {
   type: string;
   name: string;
   placeholder: string;
-  value: string;
+  value?: string;
   onChange?: (event: any) => void;
 }
 
 export default function Input(props: InputPropTypes) {
-  const { type, name, placeholder, value, onChange } = props;
+  const { type, name, placeholder, onChange, value } = props;
   return (
     <div className="relative mt-2 rounded-md shadow-sm">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"></div>

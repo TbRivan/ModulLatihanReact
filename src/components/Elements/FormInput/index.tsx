@@ -6,12 +6,12 @@ interface FormInputTypes {
   name: string;
   type: string;
   placeholder: string;
-  value: string;
-  onChange: (event: any) => void;
+  value?: string;
+  onChange?: (event: any) => void;
 }
 
 export default function FormInput(props: FormInputTypes) {
-  const { label, name, type, placeholder, value, onChange } = props;
+  const { label, name, type, placeholder, onChange, value } = props;
   return (
     <div>
       <Label label={label} name={name} />
