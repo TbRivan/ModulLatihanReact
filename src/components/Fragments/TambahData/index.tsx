@@ -1,30 +1,36 @@
+import { useLogin } from "../../../hooks/useLogin";
+import { postDataTable } from "../../../services/table.services";
 import Button from "../../Elements/Button";
 import FormInput from "../../Elements/FormInput";
 
 export default function TambahData() {
+  useLogin();
   const handleSubmit = (event: any) => {
     event.preventDefault();
     const data = {
-      id: Math.floor(Math.random() * 100 + 1),
+      // id: Math.floor(Math.random() * 100 + 1),
       nama: event.target.nama.value,
       alamat: event.target.alamat.value,
       noTelp: event.target.noTelp.value,
       email: event.target.email.value,
     };
 
-    console.log(event.target);
-    if (localStorage.getItem("data") === null) {
-      localStorage.setItem("data", JSON.stringify([data]));
-    } else {
-      const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
-      dataLocal.push(data);
-      localStorage.setItem("data", JSON.stringify(dataLocal));
-    }
-    window.location.href = "/";
+    // if (localStorage.getItem("data") === null) {
+    //   localStorage.setItem("data", JSON.stringify([data]));
+    // } else {
+    //   const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
+    //   dataLocal.push(data);
+    //   localStorage.setItem("data", JSON.stringify(dataLocal));
+    // }
+    postDataTable(data, (status: boolean) => {
+      if (status) {
+        window.location.href = "/dashboard";
+      }
+    });
   };
   return (
     <>
-      <div className="h-screen flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
         <div className="border-4 rounded-2xl p-14">
           <p className="text-2xl font-bold text-teal-600 mb-10">
             Form Input Data

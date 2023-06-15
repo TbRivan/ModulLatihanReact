@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 interface TableDataProps {
-  id: number;
+  _id: string;
   nama: string;
   alamat: string;
   noTelp: string;
@@ -11,9 +11,10 @@ interface TableDataProps {
 interface TableProps {
   tables: TableDataProps[];
   empty: boolean;
+  login: boolean;
 }
 
-export default function TableData({ tables, empty }: TableProps) {
+export default function TableData({ tables, empty, login }: TableProps) {
   const [sortKey, setSortKey] = useState("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
@@ -52,7 +53,7 @@ export default function TableData({ tables, empty }: TableProps) {
     let dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
     dataLocal = dataLocal.filter((item: any) => item.id !== id);
     localStorage.setItem("data", JSON.stringify(dataLocal));
-    window.location.href = "/";
+    window.location.href = "/dashboard";
   };
   return (
     <table className="w-1/2 text-center text-sm font-light mt-10 border-2">
@@ -113,20 +114,26 @@ export default function TableData({ tables, empty }: TableProps) {
                 <td className="whitespace-nowrap  px-6 py-4 font-semibold text-lg border">
                   {item.email}
                 </td>
-                <td className="w-[200px] whitespace-nowrap  px-6 py-4 flex justify-around">
-                  <Link
-                    to={`/edit/${item.id}`}
-                    className="flex w-300 h-10 justify-center rounded-md bg-yellow-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm"
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(item.id)}
-                    className={`flex w-full h-10 justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 mx-1`}
-                  >
-                    Delete
-                  </button>
+                <td className="w-full whitespace-nowrap  px-6 py-4 flex justify-around">
+                  {login ? (
+                    <>
+                      <Link
+                        to={`/edit/${item.id}`}
+                        className="flex w-300 h-10 justify-center rounded-md bg-yellow-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(item.id)}
+                        className={`flex w-full h-10 justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 mx-1`}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  ) : (
+                    <p>Silahkan login terlebih dahulu</p>
+                  )}
                 </td>
               </tr>
             );

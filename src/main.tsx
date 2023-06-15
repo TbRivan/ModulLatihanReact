@@ -4,14 +4,23 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import UpdateDataPage from "./pages/updateData.tsx";
 import TambahDataPage from "./pages/tambahData.tsx";
-import DashboardPage from "./pages/Dashboard.tsx";
+import DashboardPage from "./pages/dashboard.tsx";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 import LoginPage from "./pages/login.tsx";
 import RegisterPage from "./pages/register.tsx";
+import ErrorPage from "./pages/404.tsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <DashboardPage />,
+  },
+  {
+    path: "/",
+    errorElement: <ErrorPage />,
   },
   {
     path: "/login",
@@ -33,6 +42,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <ToastContainer />
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );

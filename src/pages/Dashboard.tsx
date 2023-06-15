@@ -1,37 +1,50 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import FormInput from "../components/Elements/FormInput";
-import TableData from "../components/Fragments/TableData";
+// import TableData from "../components/Fragments/TableData";
+import TableData2 from "../components/Fragments/TableData/index2";
+import NavbarLayout from "../components/Layout/NavbarLayout";
+import { useSelector } from "react-redux";
+import { getAllDataTable } from "../services/table.services";
+import { getAllDataTableTypes } from "../services/types/data-types";
 
 export default function DashboardPage() {
   const [search, setSearch] = useState("");
   const [tableEmpty, setTableEmpty] = useState(false);
+  const isLogin = useSelector((state: any) => state.login);
   const [table, setTable] = useState([
     {
-      id: 0,
+      _id: "",
       nama: "",
       alamat: "",
       noTelp: "",
       email: "",
     },
   ]);
-  useEffect(() => {
-    if (localStorage.getItem("data") === null) {
-      setTableEmpty(true);
-      setTable([]);
-    } else {
-      const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
+  // const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
 
-      setTableEmpty(false);
-      setTable(dataLocal);
-    }
+  useEffect(() => {
+    getAllDataTable((status: boolean, res: getAllDataTableTypes) => {
+      if (!status) {
+        setTableEmpty(true);
+        setTable([]);
+      } else {
+        setTableEmpty(false);
+        setTable(res.data);
+      }
+    });
+    // if (Object.keys(dataLocal).length === 0) {
+    //   setTableEmpty(true);
+    //   setTable([]);
+    // } else {
+    //   setTableEmpty(false);
+    //   setTable(dataLocal);
+    // }
   }, [tableEmpty]);
 
   useEffect(() => {
     if (search.length <= 0) {
-      const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
-
-      setTable(dataLocal);
+      setTable(table);
     }
   }, [search]);
 
@@ -45,27 +58,37 @@ export default function DashboardPage() {
 
   return (
     <>
-      <div className="h-screen flex flex-col items-center justify-center">
-        <div className="w-full flex justify-evenly items-stretch">
-          <div className="w-100">
-            <FormInput
-              label="Cari Nama"
-              name="nama"
-              type="text"
-              placeholder="Masukkan Nama"
-              onChange={handleSearch}
-            />
-          </div>
-          <div className="self-end">
-            <Link
-              to="/add"
-              className="flex w-200 h-10 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm"
-            >
-              Tambah Data
-            </Link>
+      <NavbarLayout />
+      <div className="overflow-x-auto -mt-10">
+        <div className="min-w-screen flex items-center justify-center font-sans overflow-hidden">
+          <div className="w-full lg:w-5/6">
+            <div className="bg-white shadow-lg rounded my-6">
+              <div className="w-full flex justify-between items-stretch">
+                <div className="w-100 ml-5 mb-5">
+                  <FormInput
+                    label=""
+                    name="nama"
+                    type="text"
+                    placeholder="Cari berdasarkan Nama"
+                    onChange={handleSearch}
+                  />
+                </div>
+                <div className="self-end mr-10 mb-5">
+                  {isLogin ? (
+                    <Link
+                      to="/add"
+                      className="flex w-200 h-10 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm"
+                    >
+                      Tambah Data
+                    </Link>
+                  ) : null}
+                </div>
+              </div>
+              {/* <TableData tables={table} empty={tableEmpty} login={isLogin} /> */}
+              <TableData2 tables={table} empty={tableEmpty} login={isLogin} />
+            </div>
           </div>
         </div>
-        <TableData tables={table} empty={tableEmpty} />
       </div>
     </>
   );

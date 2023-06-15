@@ -1,10 +1,9 @@
-import { useState } from "react";
 import Button from "../../Elements/Button";
 import FormInput from "../../Elements/FormInput";
 import { RegisterApi } from "../../../services/auth.services";
+import { toast } from "react-toastify";
 
 export default function FormRegister() {
-  const [registerFailed, setRegisterFailed] = useState("");
   const handleRegister = (e: any) => {
     e.preventDefault();
 
@@ -12,8 +11,9 @@ export default function FormRegister() {
     const confirmPassword = e.target.confirmPassword.value;
 
     if (password !== confirmPassword) {
-      setRegisterFailed("Password not Match");
+      toast.error("Password tidak sama");
     } else if (password.length && confirmPassword <= 8) {
+      toast.error("Panjang password minimal 8 huruf");
     } else {
       const data = {
         email: e.target.email.value,
@@ -24,7 +24,7 @@ export default function FormRegister() {
         if (status) {
           window.location.href = "/login";
         } else {
-          setRegisterFailed(res);
+          toast.error(res);
         }
       });
     }
@@ -58,10 +58,6 @@ export default function FormRegister() {
       <div className="mt-6">
         <Button type="submit" text="Register" />
       </div>
-
-      {registerFailed && (
-        <p className="text-red-500 text-center mt-5">{registerFailed}</p>
-      )}
     </form>
   );
 }

@@ -1,11 +1,13 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
+const ROOT_API = import.meta.env.VITE_API_URL;
+
 export const LoginApi = (data: any, callback: any) => {
   axios
-    .post("http://localhost:3000/api/auth/signin", data)
+    .post(`${ROOT_API}/auth/signin`, data)
     .then((res) => {
-      callback(true, res);
+      callback(true, res.data);
     })
     .catch((err) => {
       callback(false, err.response.data.message);
@@ -14,7 +16,7 @@ export const LoginApi = (data: any, callback: any) => {
 
 export const RegisterApi = (data: any, callback: any) => {
   axios
-    .post("http://localhost:3000/api/auth/signup", data)
+    .post(`${ROOT_API}/auth/signup`, data)
     .then((res) => {
       callback(true, res);
     })
