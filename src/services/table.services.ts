@@ -1,4 +1,5 @@
 import axios from "axios";
+import callAPI from "../config/api";
 
 const ROOT_API = import.meta.env.VITE_API_URL;
 
@@ -22,31 +23,34 @@ export const getDataTableByID = (id: any, callback: any) => {
     });
 };
 
-export const postDataTable = (data: any, callback: any) => {
-  axios
-    .post(`${ROOT_API}/tugas`, data)
-    .then(() => {
-      callback(true);
-    })
-    .catch((err) => console.log(err));
-};
+export async function postDataTable(data: any) {
+  const url = `${ROOT_API}/tugas`;
 
-export const updateDataTable = (id: any, data: any, callback: any) => {
-  axios
-    .patch(`${ROOT_API}/tugas/${id}`, data)
-    .then(() => {
-      callback(true);
-    })
-    .catch((err) => console.log(err));
-};
+  return callAPI({
+    url,
+    method: "POST",
+    data,
+    token: true,
+  });
+}
 
-export const deleteTugas = (id: any, callback: any) => {
-  axios
-    .delete(`${ROOT_API}/tugas/${id}`)
-    .then(() => {
-      callback(true);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+export async function updateDataTable(id: any, data: any) {
+  const url = `${ROOT_API}/tugas/${id}`;
+
+  return callAPI({
+    url,
+    method: "PATCH",
+    data,
+    token: true,
+  });
+}
+
+export async function deleteTugas(id: any) {
+  const url = `${ROOT_API}/tugas/${id}`;
+
+  return callAPI({
+    url,
+    method: "DELETE",
+    token: true,
+  });
+}

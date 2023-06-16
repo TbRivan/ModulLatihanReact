@@ -18,7 +18,6 @@ export default function NavbarLayout() {
       const jwtToken = atob(token);
       const payload: PayloadTypes = jwt_decode(jwtToken);
       dispatch(setLogin());
-      // setIsLogin(true);
       setUser(payload.user.username);
     }
   }, [isLogin]);

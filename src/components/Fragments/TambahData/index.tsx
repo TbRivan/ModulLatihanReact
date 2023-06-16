@@ -2,10 +2,11 @@ import { useLogin } from "../../../hooks/useLogin";
 import { postDataTable } from "../../../services/table.services";
 import Button from "../../Elements/Button";
 import FormInput from "../../Elements/FormInput";
+import { toast } from "react-toastify";
 
 export default function TambahData() {
   useLogin();
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     const data = {
       // id: Math.floor(Math.random() * 100 + 1),
@@ -15,6 +16,15 @@ export default function TambahData() {
       email: event.target.email.value,
     };
 
+    const response = await postDataTable(data);
+
+    if (response) {
+      toast.success("Data Ditambahkan");
+      window.location.href = "/dashboard";
+    } else {
+      toast.error(response);
+    }
+
     // if (localStorage.getItem("data") === null) {
     //   localStorage.setItem("data", JSON.stringify([data]));
     // } else {
@@ -22,11 +32,11 @@ export default function TambahData() {
     //   dataLocal.push(data);
     //   localStorage.setItem("data", JSON.stringify(dataLocal));
     // }
-    postDataTable(data, (status: boolean) => {
-      if (status) {
-        window.location.href = "/dashboard";
-      }
-    });
+    // postDataTable(data, (status: boolean) => {
+    //   if (status) {
+    //     window.location.href = "/dashboard";
+    //   }
+    // });
   };
   return (
     <>

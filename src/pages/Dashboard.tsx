@@ -12,6 +12,15 @@ export default function DashboardPage() {
   const [search, setSearch] = useState("");
   const [tableEmpty, setTableEmpty] = useState(false);
   const isLogin = useSelector((state: any) => state.login);
+  const [fetchTable, setFetchTable] = useState([
+    {
+      _id: "",
+      nama: "",
+      alamat: "",
+      noTelp: "",
+      email: "",
+    },
+  ]);
   const [table, setTable] = useState([
     {
       _id: "",
@@ -21,6 +30,7 @@ export default function DashboardPage() {
       email: "",
     },
   ]);
+  // Change with Redux state for global next time
   // const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
 
   useEffect(() => {
@@ -31,6 +41,7 @@ export default function DashboardPage() {
       } else {
         setTableEmpty(false);
         setTable(res.data);
+        setFetchTable(res.data);
       }
     });
     // if (Object.keys(dataLocal).length === 0) {
@@ -43,8 +54,8 @@ export default function DashboardPage() {
   }, [tableEmpty]);
 
   useEffect(() => {
-    if (search.length <= 0) {
-      setTable(table);
+    if (search.length < 1) {
+      setTable(fetchTable);
     }
   }, [search]);
 

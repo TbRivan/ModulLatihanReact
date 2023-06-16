@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
+import { PayloadTypes } from "../../../services/types/data-types";
+import jwt_decode from "jwt-decode";
 import { DataTableTypes } from "../../../services/types/data-types";
 import { deleteTugas } from "../../../services/table.services";
 import { toast } from "react-toastify";
@@ -13,6 +16,16 @@ interface TableProps {
 export default function TableData2({ tables, empty, login }: TableProps) {
   const [sortKey, setSortKey] = useState("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      const jwtToken = atob(token);
+      const payload: PayloadTypes = jwt_decode(jwtToken);
+      setUserId(payload.user.id);
+    }
+  }, []);
 
   // Function to handle table sorting
   const handleSort = (key: string) => {
@@ -45,13 +58,15 @@ export default function TableData2({ tables, empty, login }: TableProps) {
   // Sort the table data before rendering
   const sortedTableData = sortTableData(tables);
 
-  const handleDelete = (id: number) => {
-    deleteTugas(id, (status: boolean) => {
-      if (status) {
-        toast("Data Terhapus");
-        window.location.href = "/dashboard";
-      }
-    });
+  const handleDelete = async (id: number) => {
+    const response = await deleteTugas(id);
+
+    if (response.error) {
+      toast.error(response.message);
+    } else {
+      toast.success("Berhasil hapus data");
+      window.location.href = "/dashboard";
+    }
     // let dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
     // dataLocal = dataLocal.filter((item: any) => item.id !== id);
     // localStorage.setItem("data", JSON.stringify(dataLocal));
@@ -127,7 +142,7 @@ export default function TableData2({ tables, empty, login }: TableProps) {
                 </td>
                 <td className="py-3 px-6 text-center">
                   <div className="flex item-center justify-center">
-                    {login ? (
+                    {login && item.user === userId ? (
                       <>
                         <div className="w-4 mr-5 transform hover:text-purple-500 hover:scale-110">
                           <Link to={`/edit/${item._id}`}>
@@ -144,7 +159,7 @@ export default function TableData2({ tables, empty, login }: TableProps) {
                         </div>
                       </>
                     ) : (
-                      <p>Silahkan Login terlebih dahulu</p>
+                      <p>Silahkan Login Terlebih Dahulu</p>
                     )}
                   </div>
                 </td>

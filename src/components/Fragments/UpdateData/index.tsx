@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import FormInput from "../../Elements/FormInput";
 import Button from "../../Elements/Button";
 import { useLogin } from "../../../hooks/useLogin";
+import { toast } from "react-toastify";
 import {
   getDataTableByID,
   updateDataTable,
@@ -36,7 +37,7 @@ export default function UpdateData() {
     // });
   }, []);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = {
       // id,
@@ -45,6 +46,15 @@ export default function UpdateData() {
       noTelp,
       email,
     };
+
+    const response = await updateDataTable(id, data);
+
+    if (response.error) {
+      toast.error(response.message);
+    } else {
+      toast.success("Data Berhasil diupdate");
+      window.location.href = "/dashboard";
+    }
     // const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
     // dataLocal.map((item: any) => {
     //   if (item.id == id) {
@@ -55,12 +65,6 @@ export default function UpdateData() {
     //   }
     // });
     // localStorage.setItem("data", JSON.stringify(dataLocal));
-
-    updateDataTable(id, data, (status: boolean) => {
-      if (status) {
-        window.location.href = "/dashboard";
-      }
-    });
   };
   return (
     <div className="flex flex-col items-center justify-center">
