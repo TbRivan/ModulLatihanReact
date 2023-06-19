@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 interface AuthLayoutprops {
   children: any;
@@ -8,6 +10,14 @@ interface AuthLayoutprops {
 
 const AuthLayout = (props: AuthLayoutprops) => {
   const { children, title, type } = props;
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      window.location.href = "/dashboard";
+    }
+  }, []);
+
   return (
     <div className=" flex justify-center items-center min-h-screen">
       <div className="w-full max-w-md border-4 rounded-2xl p-14">

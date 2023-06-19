@@ -3,6 +3,8 @@ import Cookies from "js-cookie";
 import Button from "../../Elements/Button";
 import FormInput from "../../Elements/FormInput";
 import { toast } from "react-toastify";
+import GoogleLoginForm from "./GoogleLoginForm";
+import FacebookLoginForm from "./FacebookLoginForm";
 
 export default function FormLogin() {
   const handleLogin = (e: any) => {
@@ -27,22 +29,29 @@ export default function FormLogin() {
     });
   };
   return (
-    <form onSubmit={handleLogin}>
-      <FormInput
-        label="Email"
-        type="email"
-        placeholder="johndoe@gmail.com"
-        name="email"
-      />
-      <FormInput
-        label="Password"
-        type="password"
-        placeholder="******"
-        name="password"
-      />
-      <div className="mt-6">
-        <Button type="submit" text="Login" />
-      </div>
-    </form>
+    <>
+      <form onSubmit={handleLogin}>
+        <FormInput
+          label="Email"
+          type="email"
+          placeholder="johndoe@gmail.com"
+          name="email"
+        />
+        <FormInput
+          label="Password"
+          type="password"
+          placeholder="******"
+          name="password"
+        />
+        <div className="mt-6">
+          <Button type="submit" text="Login" />
+        </div>
+      </form>
+      <span className="font-semibold flex justify-center mt-2 -mb-2 text-slate-800">
+        Or Continue With
+      </span>
+      <GoogleLoginForm />
+      <FacebookLoginForm />
+    </>
   );
 }

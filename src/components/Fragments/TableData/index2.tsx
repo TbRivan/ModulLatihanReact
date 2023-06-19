@@ -64,7 +64,7 @@ export default function TableData2({ tables, empty, login }: TableProps) {
     if (response.error) {
       toast.error(response.message);
     } else {
-      toast.success("Berhasil hapus data");
+      toast.success("Success delete data");
       window.location.href = "/dashboard";
     }
     // let dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
@@ -159,7 +159,7 @@ export default function TableData2({ tables, empty, login }: TableProps) {
                         </div>
                       </>
                     ) : (
-                      <p>Silahkan Login Terlebih Dahulu</p>
+                      <p>Action Forbidden</p>
                     )}
                   </div>
                 </td>

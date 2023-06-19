@@ -25,6 +25,17 @@ export const RegisterApi = (data: any, callback: any) => {
     });
 };
 
+export const LoginGoogle = (callback: any) => {
+  axios
+    .get(`${ROOT_API}/auth/google`)
+    .then((res) => {
+      callback(true, res);
+    })
+    .catch((err) => {
+      callback(false, err.response);
+    });
+};
+
 export const getUsername = (token: string) => {
   const decoded: any = jwt_decode(token);
   return decoded.username;

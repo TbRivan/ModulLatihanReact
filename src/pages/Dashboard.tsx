@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import FormInput from "../components/Elements/FormInput";
 // import TableData from "../components/Fragments/TableData";
 import TableData2 from "../components/Fragments/TableData/index2";
@@ -7,6 +7,7 @@ import NavbarLayout from "../components/Layout/NavbarLayout";
 import { useSelector } from "react-redux";
 import { getAllDataTable } from "../services/table.services";
 import { getAllDataTableTypes } from "../services/types/data-types";
+import Cookies from "js-cookie";
 
 export default function DashboardPage() {
   const [search, setSearch] = useState("");
@@ -30,8 +31,17 @@ export default function DashboardPage() {
       email: "",
     },
   ]);
-  // Change with Redux state for global next time
+  const queryURL = useLocation().search;
   // const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
+
+  useEffect(() => {
+    const token = new URLSearchParams(queryURL).get("token") || "";
+    if (token) {
+      const tokenBase64 = btoa(token);
+      Cookies.set("token", tokenBase64, { expires: 1 });
+      window.location.href = "/dashboard";
+    }
+  }, []);
 
   useEffect(() => {
     getAllDataTable((status: boolean, res: getAllDataTableTypes) => {
@@ -80,17 +90,18 @@ export default function DashboardPage() {
                     label=""
                     name="nama"
                     type="text"
-                    placeholder="Cari berdasarkan Nama"
+                    placeholder="Find by Name"
                     onChange={handleSearch}
                   />
                 </div>
+
                 <div className="self-end mr-10 mb-5">
                   {isLogin ? (
                     <Link
                       to="/add"
                       className="flex w-200 h-10 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm"
                     >
-                      Tambah Data
+                      Add New Data
                     </Link>
                   ) : null}
                 </div>
