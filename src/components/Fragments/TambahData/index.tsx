@@ -3,8 +3,10 @@ import { postDataTable } from "../../../services/table.services";
 import Button from "../../Elements/Button";
 import FormInput from "../../Elements/FormInput";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function TambahData() {
+  const navigate = useNavigate();
   useLogin();
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -20,7 +22,7 @@ export default function TambahData() {
 
     if (response) {
       toast.success("Data Ditambahkan");
-      window.location.href = "/dashboard";
+      navigate("/dashboard");
     } else {
       toast.error(response);
     }
@@ -34,7 +36,6 @@ export default function TambahData() {
     // }
     // postDataTable(data, (status: boolean) => {
     //   if (status) {
-    //     window.location.href = "/dashboard";
     //   }
     // });
   };

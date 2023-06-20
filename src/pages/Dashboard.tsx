@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import FormInput from "../components/Elements/FormInput";
-// import TableData from "../components/Fragments/TableData";
-import TableData2 from "../components/Fragments/TableData/index2";
+import TableData from "../components/Fragments/TableData";
 import NavbarLayout from "../components/Layout/NavbarLayout";
 import { useSelector } from "react-redux";
 import { getAllDataTable } from "../services/table.services";
@@ -106,8 +105,7 @@ export default function DashboardPage() {
                   ) : null}
                 </div>
               </div>
-              {/* <TableData tables={table} empty={tableEmpty} login={isLogin} /> */}
-              <TableData2 tables={table} empty={tableEmpty} login={isLogin} />
+              <TableData tables={table} empty={tableEmpty} login={isLogin} />
             </div>
           </div>
         </div>

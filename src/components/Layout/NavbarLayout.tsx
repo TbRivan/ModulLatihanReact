@@ -18,14 +18,13 @@ export default function NavbarLayout() {
       const jwtToken = atob(token);
       const payload: PayloadTypes = jwt_decode(jwtToken);
       dispatch(setLogin());
-      setUser(payload.user.username);
+      setUser(payload.user.username || "New User");
     }
   }, [isLogin]);
 
   const onLogout = () => {
     Cookies.remove("token");
     dispatch(setLogout());
-    // window.location.href = "/dashboard";
     // setIsLogin(false);
   };
 

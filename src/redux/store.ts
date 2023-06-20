@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import loginReducer from "./slices/loginSlice";
+import tableReducer from "./slices/tableSlice";
 
 const store = configureStore({
   reducer: {
     login: loginReducer,
+    table: tableReducer,
   },
 });
 

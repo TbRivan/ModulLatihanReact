@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
-import Cookies from "js-cookie";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { PayloadTypes } from "../../../services/types/data-types";
-import jwt_decode from "jwt-decode";
-import { DataTableTypes } from "../../../services/types/data-types";
-import { deleteTugas } from "../../../services/table.services";
-import { toast } from "react-toastify";
 
+interface TableDataProps {
+  _id: string;
+  nama: string;
+  alamat: string;
+  noTelp: string;
+  email: string;
+}
 interface TableProps {
-  tables: DataTableTypes[];
+  tables: TableDataProps[];
   empty: boolean;
   login: boolean;
 }
@@ -16,16 +17,6 @@ interface TableProps {
 export default function TableData2({ tables, empty, login }: TableProps) {
   const [sortKey, setSortKey] = useState("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-  const [userId, setUserId] = useState("");
-
-  useEffect(() => {
-    const token = Cookies.get("token");
-    if (token) {
-      const jwtToken = atob(token);
-      const payload: PayloadTypes = jwt_decode(jwtToken);
-      setUserId(payload.user.id);
-    }
-  }, []);
 
   // Function to handle table sorting
   const handleSort = (key: string) => {
@@ -58,49 +49,48 @@ export default function TableData2({ tables, empty, login }: TableProps) {
   // Sort the table data before rendering
   const sortedTableData = sortTableData(tables);
 
-  const handleDelete = async (id: number) => {
-    const response = await deleteTugas(id);
-
-    if (response.error) {
-      toast.error(response.message);
-    } else {
-      toast.success("Success delete data");
-      window.location.href = "/dashboard";
-    }
-    // let dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
-    // dataLocal = dataLocal.filter((item: any) => item.id !== id);
-    // localStorage.setItem("data", JSON.stringify(dataLocal));
+  const handleDelete = (id: number) => {
+    let dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
+    dataLocal = dataLocal.filter((item: any) => item.id !== id);
+    localStorage.setItem("data", JSON.stringify(dataLocal));
+    window.location.href = "/dashboard";
   };
   return (
-    <table className="min-w-max w-full table-auto">
-      <thead>
-        <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-          <th className="py-3 px-6 text-left text-lg">No</th>
+    <table className="w-1/2 text-center text-sm font-light mt-10 border-2">
+      <thead className="border-b bg-neutral-500 text-lg text-white">
+        <tr>
+          <th scope="col" className=" px-6 py-4 border">
+            No
+          </th>
           <th
-            className="py-3 px-6 text-left cursor-pointer text-lg flex justify-evenly hover:bg-gray-300"
             onClick={() => handleSort("nama")}
+            scope="col"
+            className=" px-6 py-4 border hover:bg-neutral-400 cursor-ns-resize"
           >
-            <img
-              src="icon/sort.png"
-              alt="sort"
-              className="w-4 h-5  mt-1 order-2"
-            />{" "}
             Nama
           </th>
-          <th className="py-3 px-6 text-center text-lg">Alamat</th>
-          <th className="py-3 px-6 text-center text-lg">No Telp</th>
-          <th className="py-3 px-6 text-center text-lg">Email</th>
-          <th className="py-3 px-6 text-center text-lg">Actions</th>
+          <th scope="col" className=" px-6 py-4 border">
+            Alamat
+          </th>
+          <th scope="col" className=" px-6 py-4 border">
+            No Telp
+          </th>
+          <th scope="col" className=" px-6 py-4 border">
+            Email
+          </th>
+          <th scope="col" className=" px-6 py-4 border">
+            Action
+          </th>
         </tr>
       </thead>
-      <tbody className="text-gray-600 text-sm font-light">
+      <tbody>
         {empty && (
-          <tr className="border-b border-gray-200 hover:bg-gray-100">
-            <td className="py-3 px-6 text-center whitespace-nowrap" colSpan={6}>
-              <div className="flex items-center">
-                <div className="mr-2"></div>
-                <span className="font-medium">Data Kosong</span>
-              </div>
+          <tr>
+            <td
+              colSpan={6}
+              className="border border-slate-300 p-3 text-center font-bold text-lg"
+            >
+              Data Kosong, Silahkan Masukkan Data
             </td>
           </tr>
         )}
@@ -108,60 +98,42 @@ export default function TableData2({ tables, empty, login }: TableProps) {
           sortedTableData.length > 0 &&
           sortedTableData.map((item, index) => {
             return (
-              <tr
-                key={index}
-                className="border-b border-gray-200 hover:bg-gray-100"
-              >
-                <td className="py-3 px-6 text-left whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="mr-2"></div>
-                    <span className="font-medium">{index + 1}</span>
-                  </div>
+              <tr key={index} className="border-b dark:border-neutral-500">
+                <td className="whitespace-nowrap  px-6 py-4 text-center font-semibold text-lg border">
+                  {index + 1}
                 </td>
-                <td className="py-3 px-6 text-left whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="mr-2"></div>
-                    <span className="font-bold">{item.nama}</span>
-                  </div>
+                <td className="whitespace-nowrap  px-6 py-4 font-semibold text-lg border">
+                  {item.nama}
                 </td>
-                <td className="py-3 px-6 text-center">
-                  <div className="flex items-center">
-                    <div className="mr-2"></div>
-                    <span className="font-medium">{item.alamat}</span>
-                  </div>
+                <td className="whitespace-nowrap  px-6 py-4 font-semibold text-lg border">
+                  {item.alamat}
                 </td>
-                <td className="py-3 px-6 text-center">
-                  <div className="flex items-center justify-center">
-                    {item.noTelp}
-                  </div>
+                <td className="whitespace-nowrap  px-6 py-4 font-semibold text-lg border">
+                  {item.noTelp}
                 </td>
-                <td className="py-3 px-6 text-center">
-                  <span className="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-sm font-medium">
-                    {item.email}
-                  </span>
+                <td className="whitespace-nowrap  px-6 py-4 font-semibold text-lg border">
+                  {item.email}
                 </td>
-                <td className="py-3 px-6 text-center">
-                  <div className="flex item-center justify-center">
-                    {login && item.user === userId ? (
-                      <>
-                        <div className="w-4 mr-5 transform hover:text-purple-500 hover:scale-110">
-                          <Link to={`/edit/${item._id}`}>
-                            <img src="/icon/edit.svg" alt="edit" />
-                          </Link>
-                        </div>
-                        <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                          <a
-                            onClick={() => handleDelete(item._id)}
-                            className="cursor-pointer"
-                          >
-                            <img src="/icon/delete.svg" alt="delete" />
-                          </a>
-                        </div>
-                      </>
-                    ) : (
-                      <p>Action Forbidden</p>
-                    )}
-                  </div>
+                <td className="w-full whitespace-nowrap  px-6 py-4 flex justify-around">
+                  {login ? (
+                    <>
+                      <Link
+                        to={`/edit/${item.id}`}
+                        className="flex w-300 h-10 justify-center rounded-md bg-yellow-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(item.id)}
+                        className={`flex w-full h-10 justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 mx-1`}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  ) : (
+                    <p>Silahkan login terlebih dahulu</p>
+                  )}
                 </td>
               </tr>
             );

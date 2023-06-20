@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import FormInput from "../../Elements/FormInput";
 import Button from "../../Elements/Button";
 import { useLogin } from "../../../hooks/useLogin";
@@ -10,6 +10,7 @@ import {
 } from "../../../services/table.services";
 
 export default function UpdateData() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [nama, setNama] = useState("");
   const [alamat, setAlamat] = useState("");
@@ -53,7 +54,7 @@ export default function UpdateData() {
       toast.error(response.message);
     } else {
       toast.success("Data Berhasil diupdate");
-      window.location.href = "/dashboard";
+      navigate("/dashboard");
     }
     // const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
     // dataLocal.map((item: any) => {

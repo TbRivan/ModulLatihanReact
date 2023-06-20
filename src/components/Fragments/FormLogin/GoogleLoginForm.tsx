@@ -22,8 +22,8 @@ export default function GoogleLoginForm() {
           type="submit"
           className="flex w-full text-center bg-white border border-gray-300 rounded-lg shadow-md px-6 py-2 text-medium font-semibold text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         >
-          <span className="text-center w-full">Google</span>
-          <img src="/icon/googleicon.svg" className="-ml-24" alt="googleicon" />
+          <span className="text-center w-full">Continue with Google</span>
+          <img src="/icon/googleicon.svg" className="-ml-12" alt="googleicon" />
         </button>
       </div>
     </form>
