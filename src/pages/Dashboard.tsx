@@ -5,33 +5,22 @@ import TableData from "../components/Fragments/TableData";
 import NavbarLayout from "../components/Layout/NavbarLayout";
 import { useSelector } from "react-redux";
 import { getAllDataTable } from "../services/table.services";
-import { getAllDataTableTypes } from "../services/types/data-types";
+import {
+  DataTableTypes,
+  getAllDataTableTypes,
+} from "../services/types/data-types";
+import { Select, Space } from "antd";
 import Cookies from "js-cookie";
 
 export default function DashboardPage() {
   const [search, setSearch] = useState("");
   const [tableEmpty, setTableEmpty] = useState(false);
-  const isLogin = useSelector((state: any) => state.login);
-  const [fetchTable, setFetchTable] = useState([
-    {
-      _id: "",
-      nama: "",
-      alamat: "",
-      noTelp: "",
-      email: "",
-    },
-  ]);
-  const [table, setTable] = useState([
-    {
-      _id: "",
-      nama: "",
-      alamat: "",
-      noTelp: "",
-      email: "",
-    },
-  ]);
+  const isLogin = useSelector((state: any) => state.login.isLogin);
+  const [select, setSelect] = useState(1);
+  const [fetchTable, setFetchTable] = useState<DataTableTypes[]>([]);
+  const [table, setTable] = useState<DataTableTypes[]>([]);
+  const userId = useSelector((state: any) => state.login.userId);
   const queryURL = useLocation().search;
-  // const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
 
   useEffect(() => {
     const token = new URLSearchParams(queryURL).get("token") || "";
@@ -53,14 +42,16 @@ export default function DashboardPage() {
         setFetchTable(res.data);
       }
     });
-    // if (Object.keys(dataLocal).length === 0) {
-    //   setTableEmpty(true);
-    //   setTable([]);
-    // } else {
-    //   setTableEmpty(false);
-    //   setTable(dataLocal);
-    // }
   }, [tableEmpty]);
+
+  useEffect(() => {
+    if (select === 1) {
+      setTable(fetchTable);
+    } else if (select === 2) {
+      let userTable = table.filter((item: any) => item.user.includes(userId));
+      setTable(userTable);
+    }
+  }, [select]);
 
   useEffect(() => {
     if (search.length < 1) {
@@ -70,10 +61,15 @@ export default function DashboardPage() {
 
   const handleSearch = (event: any) => {
     setSearch(event.target.value);
+
     let filterData = table.filter((item: any) =>
       item.nama.toLowerCase().includes(search.toLowerCase())
     );
     setTable(filterData);
+  };
+
+  const selectChange = (value: number) => {
+    setSelect(value);
   };
 
   return (
@@ -82,16 +78,27 @@ export default function DashboardPage() {
       <div className="overflow-x-auto -mt-10">
         <div className="min-w-screen flex items-center justify-center font-sans overflow-hidden">
           <div className="w-full lg:w-5/6">
-            <div className="bg-white shadow-lg rounded my-6">
-              <div className="w-full flex justify-between items-stretch">
+            <div className=" bg-white shadow-lg rounded my-6">
+              <div className="w-full flex justify-between justify-items-stretch">
                 <div className="w-100 ml-5 mb-5">
-                  <FormInput
-                    label=""
-                    name="nama"
-                    type="text"
-                    placeholder="Find by Name"
-                    onChange={handleSearch}
-                  />
+                  <Space wrap>
+                    <Select
+                      className="mt-5 w-32"
+                      defaultValue={1}
+                      onChange={selectChange}
+                      options={[
+                        { value: 1, label: "All Data" },
+                        { value: 2, label: "User Data" },
+                      ]}
+                    />
+                    <FormInput
+                      label=""
+                      name="nama"
+                      type="text"
+                      placeholder="Find by Name"
+                      onChange={handleSearch}
+                    />
+                  </Space>
                 </div>
 
                 <div className="self-end mr-10 mb-5">

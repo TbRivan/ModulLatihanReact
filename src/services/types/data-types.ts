@@ -14,6 +14,7 @@ export interface DataTableTypes {
   alamat: string;
   noTelp: string;
   email: string;
+  user: string;
   __v?: number;
 }
 

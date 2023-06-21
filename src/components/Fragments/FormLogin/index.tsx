@@ -26,7 +26,7 @@ export default function FormLogin() {
       LoginApi(data, (status: boolean, res: any) => {
         if (status) {
           // localStorage.setItem("token", res);
-          toast("success");
+          toast("Login Success");
           const token = res.data.token;
           const tokenBase64 = btoa(token);
           Cookies.set("token", tokenBase64, { expires: 1 });
