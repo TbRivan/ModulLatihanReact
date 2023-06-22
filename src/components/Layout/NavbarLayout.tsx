@@ -30,7 +30,7 @@ export default function NavbarLayout() {
 
   return (
     <>
-      <div className="bg-gray-100 font-sans mb-20">
+      <div className="bg-gray-100 font-sans">
         <div className="bg-white shadow">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between py-4">
@@ -44,6 +44,12 @@ export default function NavbarLayout() {
                   className="text-gray-800 text-2xl font-semibold hover:text-purple-600 mr-4"
                 >
                   Dashboard
+                </Link>
+                <Link
+                  to="/chat"
+                  className="text-gray-800 text-2xl font-semibold hover:text-purple-600 mr-4"
+                >
+                  Chat
                 </Link>
               </div>
 
