@@ -1,7 +1,7 @@
 import { ChatState } from "../../../context/ChatProvider";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { getAllChat, getSender } from "../../../services/user.sevices";
+import { getAllChat } from "../../../services/user.sevices";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { PayloadTypes } from "../../../services/types/data-types";
@@ -9,6 +9,7 @@ import { Box, Stack, Text, Button } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from "../SideDrawer/ChatLoading";
 import GroupChatModal from "../GroupChatModal";
+import { getSender } from "../../../services/chatLogic";
 
 const MyChats = ({ fetchAgain }: any) => {
   const [loggedUser, setLoggedUser] = useState({});
@@ -28,7 +29,7 @@ const MyChats = ({ fetchAgain }: any) => {
     if (token) {
       const jwtToken = atob(token);
       const payload: PayloadTypes = jwt_decode(jwtToken);
-      setLoggedUser(payload);
+      setLoggedUser(payload.user);
       fetchChats();
     }
   }, [fetchAgain]);
@@ -41,6 +42,7 @@ const MyChats = ({ fetchAgain }: any) => {
       p={3}
       bg="white"
       minHeight="90vh"
+      h="75%"
       w={{ base: "100%", md: "31%" }}
       borderRadius="lg"
       borderWidth="1px"
@@ -72,7 +74,7 @@ const MyChats = ({ fetchAgain }: any) => {
         p={3}
         bg="#F8F8F8"
         w="100%"
-        h="100%"
+        h="75%"
         borderRadius="lg"
         overflowY="hidden"
       >
@@ -96,7 +98,7 @@ const MyChats = ({ fetchAgain }: any) => {
                 </Text>
                 {chat.latestMessage && (
                   <Text fontSize="xs">
-                    <b>{chat.latestMessage.sender.name} : </b>
+                    <b>{chat.latestMessage.sender.username} : </b>
                     {chat.latestMessage.content.length > 50
                       ? chat.latestMessage.content.substring(0, 51) + "..."
                       : chat.latestMessage.content}

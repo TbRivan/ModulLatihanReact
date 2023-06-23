@@ -32,7 +32,7 @@ const GroupChatModal = (props: GroupChatModalProps) => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const { user, chats, setChats } = ChatState();
+  const { chats, setChats } = ChatState();
 
   const handleSearch = async (query: any) => {
     setSearch(query);
@@ -53,7 +53,7 @@ const GroupChatModal = (props: GroupChatModalProps) => {
       toast.error("Please fill all the fields");
       return;
     }
-
+    console.log("fetch", chats);
     const payload = {
       name: groupChatName,
       users: JSON.stringify(selectedUsers.map((u) => u._id)),
@@ -61,9 +61,7 @@ const GroupChatModal = (props: GroupChatModalProps) => {
 
     try {
       const { data } = await createChatGroup(payload);
-      const responseData = data.data;
-      setChats(responseData, ...chats);
-      window.location.href = "/chat";
+      setChats([data.data, ...chats]);
       onClose();
       toast.success("New Group Chat Added");
     } catch (error) {

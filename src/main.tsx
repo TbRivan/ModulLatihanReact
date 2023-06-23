@@ -49,13 +49,13 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <ChatProvider>
-      <ChakraProvider>
-        <ToastContainer />
-        <Provider store={store}>
+    <Provider store={store}>
+      <ChatProvider>
+        <ChakraProvider>
+          <ToastContainer />
           <RouterProvider router={router} />
-        </Provider>
-      </ChakraProvider>
-    </ChatProvider>
+        </ChakraProvider>
+      </ChatProvider>
+    </Provider>
   </React.StrictMode>
 );

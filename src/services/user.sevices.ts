@@ -60,12 +60,49 @@ export async function renameGroup(data: any) {
   });
 }
 
-export const getSender = (loggedUser: any, users: any) => {
-  return users[0]._id === loggedUser._id
-    ? users[0].username
-    : users[1].username;
-};
+export async function addUserToGroup(data: any) {
+  const url = `${ROOT_API}/chat/groupadd`;
 
-export const getSenderFull = (loggedUser: any, users: any) => {
-  return users[0]._id === loggedUser._id ? users[0] : users[1];
-};
+  return callAPI({
+    url,
+    data,
+    method: "PUT",
+    token: true,
+    forChat: true,
+  });
+}
+
+export async function removeUserFromGroup(data: any) {
+  const url = `${ROOT_API}/chat/groupremove`;
+
+  return callAPI({
+    url,
+    data,
+    method: "PUT",
+    token: true,
+    forChat: true,
+  });
+}
+
+export async function postMessage(data: any) {
+  const url = `${ROOT_API}/message`;
+
+  return callAPI({
+    url,
+    data,
+    method: "POST",
+    token: true,
+    forChat: true,
+  });
+}
+
+export async function getAllMessages(id: string) {
+  const url = `${ROOT_API}/message/${id}`;
+
+  return callAPI({
+    url,
+    method: "GET",
+    token: true,
+    forChat: true,
+  });
+}

@@ -9,19 +9,29 @@ const ChatProvider = ({ children }: any) => {
   const [user, setUser] = useState<UserChatTypes>();
   const [selectedChat, setSelectedChat] = useState<any>();
   const [chats, setChats] = useState<any[]>([]);
+  const [notification, setNotification] = useState<any[]>([]);
 
   useEffect(() => {
     const token = Cookies.get("token");
     if (token) {
       const jwtToken = atob(token);
       const payload: any = jwt_decode(jwtToken);
-      setUser(payload);
+      setUser(payload.user);
     }
   }, []);
 
   return (
     <ChatContext.Provider
-      value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats }}
+      value={{
+        user,
+        setUser,
+        selectedChat,
+        setSelectedChat,
+        chats,
+        setChats,
+        notification,
+        setNotification,
+      }}
     >
       {children}
     </ChatContext.Provider>

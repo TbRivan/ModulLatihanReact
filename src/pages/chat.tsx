@@ -12,20 +12,22 @@ const ChatPage = () => {
 
   return (
     <>
-      <NavbarLayout />
-      {user && <SideDrawer />}
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        w="100%"
-        h="91.vh"
-        p="10px"
-      >
-        {user && <MyChats fetchAgain={fetchAgain} />}
-        {user && (
-          <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
-        )}
-      </Box>
+      <div className="">
+        <NavbarLayout />
+        {user && <SideDrawer />}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          w="100%"
+          h="75%"
+          p="10px"
+        >
+          {user && <MyChats fetchAgain={fetchAgain} />}
+          {user && (
+            <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+          )}
+        </Box>
+      </div>
     </>
   );
 };

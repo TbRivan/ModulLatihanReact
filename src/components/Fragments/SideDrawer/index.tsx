@@ -1,4 +1,3 @@
-import { BellIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -8,8 +7,6 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Input,
-  Menu,
-  MenuButton,
   Spinner,
   Text,
   Tooltip,
@@ -33,7 +30,7 @@ const SideDrawer = () => {
 
   const handleSearch = async () => {
     if (!search) {
-      toast.error("Please Input something in search");
+      toast("Showing All User");
     }
     try {
       setLoading(true);
@@ -73,14 +70,6 @@ const SideDrawer = () => {
           </Button>
         </Tooltip>
       </Box>
-      <Box mt="-14" mb="4" ml="1400">
-        <Menu>
-          <MenuButton p={1}>
-            <BellIcon fontSize="2xl" m={1} />
-          </MenuButton>
-          {/* <MenuList></MenuList> */}
-        </Menu>
-      </Box>
 
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
@@ -107,7 +96,7 @@ const SideDrawer = () => {
                 />
               ))
             ) : (
-              <span>No User Found</span>
+              <span className="mt-5"></span>
             )}
             {loadingChat && <Spinner ml="auto" display="flex" />}
           </DrawerBody>

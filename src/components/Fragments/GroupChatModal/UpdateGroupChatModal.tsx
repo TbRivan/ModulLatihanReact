@@ -19,10 +19,19 @@ import { useState } from "react";
 import { ChatState } from "../../../context/ChatProvider";
 import UserBadgeItem from "../UserAvatar/UserBadgmeItem";
 import UserListItem from "../UserAvatar/UserListItem";
-import { renameGroup } from "../../../services/user.sevices";
+import {
+  addUserToGroup,
+  removeUserFromGroup,
+  renameGroup,
+  searchUser,
+} from "../../../services/user.sevices";
 import { toast } from "react-toastify";
 
-const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }: any) => {
+const UpdateGroupChatModal = ({
+  fetchAgain,
+  setFetchAgain,
+  fetchMessages,
+}: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState("");
   const [search, setSearch] = useState("");
@@ -32,7 +41,31 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }: any) => {
 
   const { selectedChat, setSelectedChat, user } = ChatState();
 
-  const handleRemove = (e: any) => {};
+  const handleRemove = async (userRemove: any) => {
+    if (selectedChat.groupAdmin._id !== user.id && userRemove._id !== user.id) {
+      toast.error("Only admin can remove");
+      return;
+    }
+
+    const payload = {
+      chatId: selectedChat._id,
+      userId: userRemove._id,
+    };
+
+    try {
+      setLoading(true);
+      const { data } = await removeUserFromGroup(payload);
+      userRemove._id === user.id
+        ? setSelectedChat()
+        : setSelectedChat(data.data);
+      setFetchAgain(!fetchAgain);
+      fetchMessages();
+      setLoading(false);
+    } catch (error) {
+      toast.error("Error Removing user");
+      setLoading(false);
+    }
+  };
 
   const handleRename = async () => {
     if (!groupChatName) return;
@@ -55,8 +88,50 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }: any) => {
     setGroupChatName("");
   };
 
-  const handleSearch = (e: any) => {};
-  const handleAddUser = (e: any) => {};
+  const handleSearch = async (query: string) => {
+    setSearch(query);
+    if (!query) {
+      return;
+    }
+    try {
+      setLoading(true);
+      const { data } = await searchUser(search);
+      setLoading(false);
+      setSearchResult(data.data);
+    } catch (error) {
+      toast.error("Failed to load the Chat");
+    }
+  };
+
+  const handleAddUser = async (userAdd: any) => {
+    if (selectedChat.users.find((u: any) => u._id === userAdd._id)) {
+      toast.error("User already in group");
+      return;
+    }
+
+    if (selectedChat.groupAdmin._id !== user.id) {
+      toast.error("Only admin can add someone");
+      return;
+    }
+
+    const payload = {
+      chatId: selectedChat._id,
+      userId: userAdd._id,
+    };
+
+    try {
+      setLoading(true);
+
+      const { data } = await addUserToGroup(payload);
+
+      setSelectedChat(data.data);
+      setFetchAgain(!fetchAgain);
+      setLoading(false);
+    } catch (error) {
+      toast.error("Error adding a user");
+      setLoading(false);
+    }
+  };
 
   return (
     <>
