@@ -26,22 +26,10 @@ export default function TambahData() {
     } else {
       toast.error(response);
     }
-
-    // if (localStorage.getItem("data") === null) {
-    //   localStorage.setItem("data", JSON.stringify([data]));
-    // } else {
-    //   const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
-    //   dataLocal.push(data);
-    //   localStorage.setItem("data", JSON.stringify(dataLocal));
-    // }
-    // postDataTable(data, (status: boolean) => {
-    //   if (status) {
-    //   }
-    // });
   };
   return (
     <>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center mt-10">
         <div className="border-4 rounded-2xl p-14">
           <p className="text-2xl font-bold text-teal-600 mb-10">
             Form Input Data

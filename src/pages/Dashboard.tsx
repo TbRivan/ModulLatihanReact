@@ -75,7 +75,7 @@ export default function DashboardPage() {
   return (
     <>
       <NavbarLayout />
-      <div className="overflow-x-auto -mt-10">
+      <div className="overflow-x-auto ">
         <div className="min-w-screen flex items-center justify-center font-sans overflow-hidden">
           <div className="w-full lg:w-5/6">
             <div className=" bg-white shadow-lg rounded my-6">

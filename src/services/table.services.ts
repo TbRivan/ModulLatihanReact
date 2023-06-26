@@ -1,5 +1,5 @@
 import axios from "axios";
-import callAPI from "../config/api";
+import { callAPI } from "../config/api";
 
 const ROOT_API = import.meta.env.VITE_API_URL;
 

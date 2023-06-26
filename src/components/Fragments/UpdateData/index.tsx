@@ -56,19 +56,9 @@ export default function UpdateData() {
       toast.success("Data Berhasil diupdate");
       navigate("/dashboard");
     }
-    // const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
-    // dataLocal.map((item: any) => {
-    //   if (item.id == id) {
-    //     item.nama = data.nama;
-    //     item.alamat = data.alamat;
-    //     item.noTelp = data.noTelp;
-    //     item.email = data.email;
-    //   }
-    // });
-    // localStorage.setItem("data", JSON.stringify(dataLocal));
   };
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center mt-10">
       <div className="border-4 rounded-2xl p-14">
         <p className="text-2xl font-bold text-teal-600 mb-10">
           Form Update Data

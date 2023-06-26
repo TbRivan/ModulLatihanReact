@@ -11,7 +11,10 @@ import LoginPage from "./pages/login.tsx";
 import RegisterPage from "./pages/register.tsx";
 import ErrorPage from "./pages/404.tsx";
 import { ToastContainer } from "react-toastify";
+import { ChakraProvider } from "@chakra-ui/react";
 import "react-toastify/dist/ReactToastify.css";
+import ChatProvider from "./context/ChatProvider.tsx";
+import ChatPage from "./pages/chat.tsx";
 
 const router = createBrowserRouter([
   {
@@ -38,13 +41,21 @@ const router = createBrowserRouter([
     path: "/edit/:id",
     element: <UpdateDataPage />,
   },
+  {
+    path: "/chat",
+    element: <ChatPage />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <ToastContainer />
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ChatProvider>
+        <ChakraProvider>
+          <ToastContainer />
+          <RouterProvider router={router} />
+        </ChakraProvider>
+      </ChatProvider>
     </Provider>
   </React.StrictMode>
 );

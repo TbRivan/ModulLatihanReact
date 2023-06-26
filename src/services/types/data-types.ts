@@ -4,6 +4,13 @@ export interface UserTypes {
   email: string;
 }
 
+export interface UserChatTypes {
+  _id: string;
+  username: string;
+  email: string;
+  pic: string;
+}
+
 export interface PayloadTypes {
   user: UserTypes;
 }
