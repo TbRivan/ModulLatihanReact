@@ -4,7 +4,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import UpdateDataPage from "./pages/updateData.tsx";
 import TambahDataPage from "./pages/tambahData.tsx";
-import DashboardPage from "./pages/dashboard.tsx";
+import DashboardPage from "./pages/Dashboard.tsx";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import LoginPage from "./pages/login.tsx";

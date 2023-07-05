@@ -48,7 +48,7 @@ export default function DashboardPage() {
     if (select === 1) {
       setTable(fetchTable);
     } else if (select === 2) {
-      let userTable = table.filter((item: any) => item.user.includes(userId));
+      const userTable = table.filter((item: any) => item.user.includes(userId));
       setTable(userTable);
     }
   }, [select]);
@@ -62,7 +62,7 @@ export default function DashboardPage() {
   const handleSearch = (event: any) => {
     setSearch(event.target.value);
 
-    let filterData = table.filter((item: any) =>
+    const filterData = table.filter((item: any) =>
       item.nama.toLowerCase().includes(search.toLowerCase())
     );
     setTable(filterData);

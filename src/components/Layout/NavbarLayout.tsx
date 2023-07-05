@@ -66,24 +66,29 @@ export default function NavbarLayout() {
                         </MenuButton>
                         <MenuList pl={2}>
                           {!notification.length && "No New Messages"}
-                          {notification.map((notif: any) => {
-                            <MenuItem
-                              key={notif._id}
-                              onClick={() => {
-                                setSelectedChat(notif.chat);
-                                setNotification(
-                                  notification.filter((n: any) => n !== notif)
-                                );
-                              }}
-                            >
-                              {notif.chat.isGroupChat
-                                ? `New Message in ${notif.chat.chatName}`
-                                : `New Message From ${getSender(
-                                    user,
-                                    notif.chat.users
-                                  )}`}
-                            </MenuItem>;
-                          })}
+                          {notification.length > 0 &&
+                            notification.map((notif: any) => {
+                              return (
+                                <MenuItem
+                                  key={notif._id}
+                                  onClick={() => {
+                                    setSelectedChat(notif.chat);
+                                    setNotification(
+                                      notification.filter(
+                                        (n: any) => n !== notif
+                                      )
+                                    );
+                                  }}
+                                >
+                                  {notif.chat.isGroupChat
+                                    ? `New Message in ${notif.chat.chatName}`
+                                    : `New Message From ${getSender(
+                                        user,
+                                        notif.chat.users
+                                      )}`}
+                                </MenuItem>
+                              );
+                            })}
                         </MenuList>
                       </Menu>
                     </Box>
