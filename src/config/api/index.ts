@@ -32,6 +32,14 @@ export async function callAPI({
   }).catch((err) => err.response);
 
   if (response?.status > 300) {
+    if (response?.status === 401) {
+      const res = {
+        error: true,
+        message: "refresh",
+        data: null,
+      };
+      return res;
+    }
     const res = {
       error: true,
       message: response.data.message,

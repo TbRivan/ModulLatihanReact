@@ -28,6 +28,7 @@ export default function NavbarLayout() {
 
   const onLogout = () => {
     Cookies.remove("token");
+    Cookies.remove("refreshToken");
     dispatch(setLogout());
   };
 

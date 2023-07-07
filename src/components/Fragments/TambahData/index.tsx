@@ -21,9 +21,14 @@ export default function TambahData() {
     const response = await postDataTable(data);
 
     if (response) {
-      toast.success("Data Ditambahkan");
+      toast.success("Success Add Data");
       navigate("/dashboard");
     } else {
+      if (response.message === "refresh") {
+        refreshToken(id, data, "update");
+      } else {
+        toast.error(response.message);
+      }
       toast.error(response);
     }
   };

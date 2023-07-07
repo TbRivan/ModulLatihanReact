@@ -8,6 +8,7 @@ import {
   getDataTableByID,
   updateDataTable,
 } from "../../../services/table.services";
+import { refreshToken } from "../../../hooks/useRefreshToken";
 
 export default function UpdateData() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function UpdateData() {
   const [alamat, setAlamat] = useState("");
   const [noTelp, setNoTelp] = useState("");
   const [email, setEmail] = useState("");
+
   useLogin();
 
   useEffect(() => {
@@ -27,15 +29,6 @@ export default function UpdateData() {
         setEmail(data.email);
       }
     });
-    // const dataLocal = JSON.parse(localStorage.getItem("data") || "[]");
-    // dataLocal.map((item: any) => {
-    //   if (item.id == id) {
-    //     setNama(item.nama);
-    //     setAlamat(item.alamat);
-    //     setNoTelp(item.noTelp);
-    //     setEmail(item.email);
-    //   }
-    // });
   }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -51,12 +44,17 @@ export default function UpdateData() {
     const response = await updateDataTable(id, data);
 
     if (response.error) {
-      toast.error(response.message);
+      if (response.message === "refresh") {
+        refreshToken(id, data, "update");
+      } else {
+        toast.error(response.message);
+      }
     } else {
-      toast.success("Data Berhasil diupdate");
+      toast.success("Success update Data");
       navigate("/dashboard");
     }
   };
+
   return (
     <div className="flex flex-col items-center justify-center mt-10">
       <div className="border-4 rounded-2xl p-14">
