@@ -23,10 +23,14 @@ export default function DashboardPage() {
   const queryURL = useLocation().search;
 
   useEffect(() => {
-    const token = new URLSearchParams(queryURL).get("token") || "";
-    if (token) {
-      const tokenBase64 = btoa(token);
-      Cookies.set("token", tokenBase64, { expires: 1 });
+    const accessToken = new URLSearchParams(queryURL).get("accessToken") || "";
+    const refreshToken =
+      new URLSearchParams(queryURL).get("refreshToken") || "";
+    if (accessToken) {
+      const accessTokenBase64 = btoa(accessToken);
+      const refreshTokenBase64 = btoa(refreshToken);
+      Cookies.set("token", accessTokenBase64, { expires: 1 });
+      Cookies.set("refreshToken", refreshTokenBase64, { expires: 2 });
       window.location.href = "/dashboard";
     }
   }, []);

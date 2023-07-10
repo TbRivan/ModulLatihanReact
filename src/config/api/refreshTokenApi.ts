@@ -29,7 +29,7 @@ export async function refreshTokenApi() {
     const tokenBase64 = btoa(token);
     const refreshTokenBase64 = btoa(newRefreshToken);
     Cookies.set("token", tokenBase64, { expires: 1 });
-    Cookies.set("refreshToken", refreshTokenBase64, { expires: 7 });
+    Cookies.set("refreshToken", refreshTokenBase64, { expires: 2 });
 
     const res = {
       error: false,
