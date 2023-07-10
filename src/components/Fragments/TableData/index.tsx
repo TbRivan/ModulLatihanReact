@@ -7,6 +7,7 @@ import { DataTableTypes } from "../../../services/types/data-types";
 import { deleteTugas } from "../../../services/table.services";
 import { toast } from "react-toastify";
 import Modal from "../../Elements/Modal";
+import { refreshToken } from "../../../hooks/refreshToken";
 
 interface TableProps {
   tables: DataTableTypes[];
@@ -65,7 +66,16 @@ export default function TableData({ tables, empty, login }: TableProps) {
     const response = await deleteTugas(id);
 
     if (response.error) {
-      toast.error(response.message);
+      if (response.message === "refresh") {
+        const refresh = await refreshToken();
+        if (refresh) {
+          await deleteTugas(id);
+          toast.success("Success delete Data");
+          window.location.href = "/dashboard";
+        }
+      } else {
+        toast.error(response.message);
+      }
     } else {
       setVisible(false);
       toast.success("Success delete data");

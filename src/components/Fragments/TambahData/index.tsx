@@ -4,6 +4,7 @@ import Button from "../../Elements/Button";
 import FormInput from "../../Elements/FormInput";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { refreshToken } from "../../../hooks/refreshToken";
 
 export default function TambahData() {
   const navigate = useNavigate();
@@ -18,20 +19,26 @@ export default function TambahData() {
       email: event.target.email.value,
     };
 
-    const response = await postDataTable(data);
+    const response: any = await postDataTable(data);
 
-    if (response) {
-      toast.success("Success Add Data");
-      navigate("/dashboard");
-    } else {
+    if (response.error) {
       if (response.message === "refresh") {
-        refreshToken(id, data, "update");
+        const refresh = await refreshToken();
+        if (refresh) {
+          await postDataTable(data);
+
+          toast.success("Success update Data");
+          navigate("/dashboard");
+        }
       } else {
         toast.error(response.message);
       }
-      toast.error(response);
+    } else {
+      toast.success("Success update Data");
+      navigate("/dashboard");
     }
   };
+
   return (
     <>
       <div className="flex flex-col items-center justify-center mt-10">

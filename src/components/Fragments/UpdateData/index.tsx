@@ -8,7 +8,7 @@ import {
   getDataTableByID,
   updateDataTable,
 } from "../../../services/table.services";
-import { refreshToken } from "../../../hooks/useRefreshToken";
+import { refreshToken } from "../../../hooks/refreshToken";
 
 export default function UpdateData() {
   const navigate = useNavigate();
@@ -45,7 +45,12 @@ export default function UpdateData() {
 
     if (response.error) {
       if (response.message === "refresh") {
-        refreshToken(id, data, "update");
+        const refresh = await refreshToken();
+        if (refresh) {
+          await updateDataTable(id, data);
+          toast.success("Success update Data");
+          navigate("/dashboard");
+        }
       } else {
         toast.error(response.message);
       }
