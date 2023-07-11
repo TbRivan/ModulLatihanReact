@@ -112,20 +112,22 @@ export default function TableData({ tables, empty, login }: TableProps) {
           </tr>
         </thead>
         <tbody className="text-gray-600 text-sm font-light">
-          {empty && (
+          {!login && (
             <tr className="border-b border-gray-200 hover:bg-gray-100">
               <td
                 className="py-3 px-6 text-center whitespace-nowrap"
                 colSpan={6}
               >
-                <div className="flex items-center">
+                <div className="flex items-center justify-center">
                   <div className="mr-2"></div>
-                  <span className="font-medium">Data Kosong</span>
+                  <span className="font-medium text-xl">
+                    Please Login First
+                  </span>
                 </div>
               </td>
             </tr>
           )}
-          {!empty &&
+          {login &&
             sortedTableData.length > 0 &&
             sortedTableData.map((item, index) => {
               return (

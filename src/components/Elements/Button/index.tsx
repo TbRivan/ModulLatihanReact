@@ -1,11 +1,10 @@
 interface ButtonPropsTypes {
   text: string;
-  color: string;
   type: "button" | "submit";
 }
 
 export default function Button(props: Partial<ButtonPropsTypes>) {
-  const { text, color = "indigo", type } = props;
+  const { text, type } = props;
   return (
     <button
       type={type}
