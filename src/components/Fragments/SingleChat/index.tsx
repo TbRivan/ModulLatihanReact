@@ -8,7 +8,11 @@ import {
 } from "@chakra-ui/react";
 import { ChatState } from "../../../context/ChatProvider";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { getAllMessages, postMessage } from "../../../services/user.sevices";
+import {
+  SERVER_URL,
+  getAllMessages,
+  postMessage,
+} from "../../../services/user.sevices";
 import ProfileModal from "../ProfileModal";
 import UpdateGroupChatModal from "../GroupChatModal/UpdateGroupChatModal";
 import { useState, useEffect } from "react";
@@ -19,7 +23,7 @@ import io from "socket.io-client";
 import Lottie from "lottie-react";
 import animationData from "../../../animations/typing.json";
 
-const ENDPOINT = "http://localhost:3000";
+const ENDPOINT = SERVER_URL;
 let socket: any, selectedChatCompare: any;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }: any) => {

@@ -15,7 +15,7 @@ interface TableProps {
   login: boolean;
 }
 
-export default function TableData({ tables, empty, login }: TableProps) {
+export default function TableData({ tables, login }: TableProps) {
   const [sortKey, setSortKey] = useState("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [userId, setUserId] = useState("");

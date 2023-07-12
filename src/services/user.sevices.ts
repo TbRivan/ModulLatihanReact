@@ -1,6 +1,7 @@
 import { callAPI } from "../config/api";
 
 const ROOT_API = import.meta.env.VITE_API_URL;
+export const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export async function searchUser(search: string) {
   const url = `${ROOT_API}/user?search=${search}`;
